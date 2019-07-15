@@ -26,7 +26,7 @@ Download
 --------
 
 `upload-to-s3` is a single binary available for a number of platforms. The binary
-depends on OpenSSL/LibreSSL on BSD and Linux.
+has no runtime dependencies.
 
 <!-- http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/ -->
 

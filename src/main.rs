@@ -1,7 +1,6 @@
 use std::default::Default;
 use std::env;
 
-use futures::stream::Stream;
 use futures_fs::FsPool;
 use getopts::Options;
 

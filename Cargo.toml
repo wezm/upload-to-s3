@@ -9,6 +9,6 @@ dotenv = "0.14.1"
 futures = "0.1"
 futures-fs = "0.0.5"
 getopts = "0.2.19"
-rusoto_core = "0.40.0"
+rusoto_core = { version = "0.40.0", default-features = false, features = ["rustls"] }
 rusoto_credential = "0.40.0"
-rusoto_s3 = "0.40.0"
+rusoto_s3 = { version = "0.40.0", default-features = false, features = ["rustls"] }
