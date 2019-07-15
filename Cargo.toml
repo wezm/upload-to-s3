@@ -1,0 +1,14 @@
+[package]
+name = "upload-to-s3"
+version = "0.1.0"
+authors = ["Wesley Moore <wes@wezm.net>"]
+edition = "2018"
+
+[dependencies]
+dotenv = "0.14.1"
+futures = "0.1"
+futures-fs = "0.0.5"
+getopts = "0.2.19"
+rusoto_core = "0.40.0"
+rusoto_credential = "0.40.0"
+rusoto_s3 = "0.40.0"
