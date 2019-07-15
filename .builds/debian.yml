@@ -8,6 +8,7 @@ packages:
   - libc6-dev
   - make
   - pkg-config
+  - musl-tools
 sources:
   - https://git.sr.ht/~wezm/upload-to-s3
 tasks:
