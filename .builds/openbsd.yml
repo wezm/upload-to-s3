@@ -1,4 +1,6 @@
 image: openbsd/6.5
+secrets:
+  - 93e1832e-53fc-402d-a40e-c1da11edc0d5
 packages:
   - rust
   - pkgconf
@@ -7,5 +9,6 @@ sources:
 tasks:
   - build: |
       cd upload-to-s3
+      mv ~/.aws-env .env
       cargo build --release
 
