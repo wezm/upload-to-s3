@@ -18,4 +18,4 @@ tasks:
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env
-      PATH="$HOME/.cargo/bin:$PATH" cargo build --release x86_64-unknown-linux-musl
+      PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl
