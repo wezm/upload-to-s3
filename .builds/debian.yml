@@ -12,7 +12,7 @@ tasks:
   - install: |
       curl -LSso /tmp/rustup.sh https://sh.rustup.rs
       sh /tmp/rustup.sh -y
-      rustup target add x86_64-unknown-linux-musl
+      PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl
   - build: |
       cd upload-to-s3
       PATH="$HOME/.cargo/bin:$PATH" cargo build --release x86_64-unknown-linux-musl

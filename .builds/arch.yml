@@ -8,6 +8,7 @@ sources:
 tasks:
   - install: |
       rustup install stable
+      rustup default stable
       rustup target add x86_64-unknown-linux-musl
   - build: |
       cd upload-to-s3

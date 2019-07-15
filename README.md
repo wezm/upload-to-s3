@@ -26,19 +26,19 @@ Download
 --------
 
 `upload-to-s3` is a single binary available for a number of platforms. The binary
-depends on OpenSSL on FreeBSD and Linux.
+depends on OpenSSL/LibreSSL on BSD and Linux.
 
 <!-- http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/ -->
 
 * [FreeBSD 12.0 amd64][freebsd-bin]
 * [Linux x86\_64][linux-bin]
 * [macOS x86\_64][macos-bin]
+* [OpenBSD 6.5 amd64][openbsd-bin]
 
-<!--
-* NetBSD 8.0 x86_64:
-* OpenBSD 6.5 x86_64:
-* Raspberry Pi:
--->
+[freebsd-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz
+[linux-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz
+[macos-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz
+[openbsd-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-openbsd.tar.gz
 
 Development
 -----------
@@ -46,8 +46,10 @@ Development
 **Build Status:**
 
 * Arch Linux: [![builds.sr.ht Arch Linux status](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml?)
+* Debian Linux: [![builds.sr.ht Debian Linux status](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/debian.yml?)
 * FreeBSD: [![builds.sr.ht FreeBSD status](https://builds.sr.ht/~wezm/upload-to-s3/freebsd.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/freebsd.yml?)
-* mac OS: [![builds.sr.ht Mac OS status](https://builds.sr.ht/~wezm/upload-to-s3/mac-os.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/mac os.yml?)
+* mac OS: [![Build Status](https://api.cirrus-ci.com/github/wezm/upload-to-s3.svg)](https://cirrus-ci.com/github/wezm/upload-to-s3)
+* OpenBSD: [![builds.sr.ht OpenBSD status](https://builds.sr.ht/~wezm/upload-to-s3/openbsd.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/openbsd.yml?)
 
 **Minimum Supported Rust Version:** Latest Stable
 
@@ -56,11 +58,7 @@ Contributing
 
 If you have code or patches you wish to contribute, the preferred mechanism is
 a git pull request. Push your changes to a git repository somewhere (Sourcehut,
-GitHub, GitLab, whatever). <!--Ensure that contributions don't break [the
-tests](#testing) and add new ones when appropriate.-->
-
-Assuming you have followed the [build steps](#build) above you would do the
-following to push to your own fork on Sourcehut or your preferred git host:
+GitHub, GitLab, whatever) and then follow these steps:
 
 Change the git URL to match wherever your forked repo is:
 
@@ -73,7 +71,7 @@ Then generate the pull request:
     git fetch upstream master
     git request-pull -p upstream/master origin
 
-And copy-paste the result into a plain-text [email to me](mailto:wes@wezm.net).
+And copy-paste the result into an [email to me](mailto:wes@wezm.net).
 
 You may alternately use a patch-based approach as described on
 <https://git-send-email.io>.
