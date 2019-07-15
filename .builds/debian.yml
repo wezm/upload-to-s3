@@ -1,0 +1,18 @@
+image: debian/stable
+packages:
+  - ca-certificates
+  - curl
+  - gcc
+  - libc6-dev
+  - make
+  - pkg-config
+sources:
+  - https://git.sr.ht/~wezm/upload-to-s3
+tasks:
+  - install: |
+      curl -LSso /tmp/rustup.sh https://sh.rustup.rs
+      sh /tmp/rustup.sh -y
+      rustup target add x86_64-unknown-linux-musl
+  - build: |
+      cd upload-to-s3
+      PATH="$HOME/.cargo/bin:$PATH" cargo build --release x86_64-unknown-linux-musl

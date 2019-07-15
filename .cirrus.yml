@@ -1,0 +1,10 @@
+task:
+  name: Build (Mac OS)
+  osx_instance:
+    image: mojave-base
+  cargo_cache:
+    folder: $CARGO_HOME/registry
+    fingerprint_script: cat Cargo.lock
+  install_rust_script: 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+  build_script: 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
+  before_cache_script: rm -rf $CARGO_HOME/registry/index

@@ -1,0 +1,11 @@
+image: freebsd/latest
+packages:
+  - rust
+  - pkgconf
+sources:
+  - https://git.sr.ht/~wezm/upload-to-s3
+tasks:
+  - build: |
+      cd upload-to-s3
+      cargo build --release
+
