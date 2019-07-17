@@ -10,6 +10,6 @@ task:
     AWS_SECRET_ACCESS_KEY: ENCRYPTED[d5dfb3a2248f55ea8051ddd80c1934b44f79fe1e6bef3b4f083b4215f9e2a84f94a097fc16eff6d0d6bc3d83fac64433]
   install_script:
     - curl https://sh.rustup.rs -sSf | sh -s -- -y
-    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz | tar xzf -
+    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
   build_script: 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
   before_cache_script: rm -rf $CARGO_HOME/registry/index
