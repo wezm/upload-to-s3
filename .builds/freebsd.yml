@@ -7,7 +7,7 @@ sources:
   - https://git.sr.ht/~wezm/upload-to-s3
 tasks:
   - install: |
-      fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz | tar xzf - -C /usr/local/bin
+      fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env

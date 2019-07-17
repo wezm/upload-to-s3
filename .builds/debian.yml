@@ -14,7 +14,8 @@ tasks:
       curl -LSso /tmp/rustup.sh https://sh.rustup.rs
       sh /tmp/rustup.sh -y
       PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl
-      curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C /usr/local/bin
+      curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C /tmp
+      sudo mv /tmp/upload-to-s3 /usr/local/bin
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env
