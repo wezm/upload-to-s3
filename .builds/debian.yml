@@ -6,8 +6,6 @@ packages:
   - curl
   - gcc
   - libc6-dev
-  - make
-  - pkg-config
   - musl-tools
 sources:
   - https://git.sr.ht/~wezm/upload-to-s3
@@ -16,6 +14,7 @@ tasks:
       curl -LSso /tmp/rustup.sh https://sh.rustup.rs
       sh /tmp/rustup.sh -y
       PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl
+      curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz | tar xzf -
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env

@@ -3,10 +3,11 @@ secrets:
   - 93e1832e-53fc-402d-a40e-c1da11edc0d5
 packages:
   - rust
-  - pkgconf
 sources:
   - https://git.sr.ht/~wezm/upload-to-s3
 tasks:
+  - install: |
+      ftp -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-openbsd.tar.gz | tar xzf -
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env

@@ -3,7 +3,6 @@ secrets:
   - 93e1832e-53fc-402d-a40e-c1da11edc0d5
 packages:
   - gcc
-  - pkgconf
   - rust
 sources:
   - https://git.sr.ht/~wezm/upload-to-s3
@@ -11,4 +10,4 @@ tasks:
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env
-      cargo build --release
+      cargo build
