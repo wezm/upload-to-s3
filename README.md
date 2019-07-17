@@ -28,30 +28,27 @@ Download
 `upload-to-s3` is a single binary available for a number of platforms. The binary
 has no runtime dependencies.
 
-<!-- http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/ -->
+* [FreeBSD 12.0 amd64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz)
+* [Linux x86\_64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz)
+* [MacOS x86\_64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz)
+* [OpenBSD 6.5 amd64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-openbsd.tar.gz)
 
-* [FreeBSD 12.0 amd64][freebsd-bin]
-* [Linux x86\_64][linux-bin]
-* [macOS x86\_64][macos-bin]
-* [OpenBSD 6.5 amd64][openbsd-bin]
+Download and extract along these lines:
 
-[freebsd-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz
-[linux-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz
-[macos-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz
-[openbsd-bin]: http://releases.wezm.net.s3-website-us-east-1.amazonaws.com/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-openbsd.tar.gz
+    curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz | tar zxf -
 
 Development
 -----------
 
 **Build Status:**
 
-* Arch Linux: [![builds.sr.ht Arch Linux status](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml?)
-* Debian Linux: [![builds.sr.ht Debian Linux status](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/debian.yml?)
-* FreeBSD: [![builds.sr.ht FreeBSD status](https://builds.sr.ht/~wezm/upload-to-s3/freebsd.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/freebsd.yml?)
-* mac OS: [![Build Status](https://api.cirrus-ci.com/github/wezm/upload-to-s3.svg)](https://cirrus-ci.com/github/wezm/upload-to-s3)
-* OpenBSD: [![builds.sr.ht OpenBSD status](https://builds.sr.ht/~wezm/upload-to-s3/openbsd.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/openbsd.yml?)
+* [![builds.sr.ht Arch Linux status](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml?) — Arch Linux
+* [![builds.sr.ht Debian Linux status](https://builds.sr.ht/~wezm/upload-to-s3/arch.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/debian.yml?) — Debian Linux
+* [![builds.sr.ht FreeBSD status](https://builds.sr.ht/~wezm/upload-to-s3/freebsd.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/freebsd.yml?) — FreeBSD
+* [![Mac OS Build Status](https://api.cirrus-ci.com/github/wezm/upload-to-s3.svg)](https://cirrus-ci.com/github/wezm/upload-to-s3) — Mac OS
+* [![builds.sr.ht OpenBSD status](https://builds.sr.ht/~wezm/upload-to-s3/openbsd.yml.svg)](https://builds.sr.ht/~wezm/upload-to-s3/openbsd.yml?) — OpenBSD
 
-**Minimum Supported Rust Version:** Latest Stable
+**Minimum Supported Rust Version:** 1.33.0
 
 Contributing
 ------------
