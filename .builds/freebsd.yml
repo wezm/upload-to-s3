@@ -14,9 +14,11 @@ tasks:
       mv ~/.aws-env .env
       cargo build --release
   - publish: |
-      cd upload-to-s3
-      gitrev=$(git rev-parse --short HEAD)
-      tarball="upload-to-s3-${gitrev}-amd64-unknown-freebsd.tar.gz"
-      strip target/release/upload-to-s3
-      tar zcf "$tarball" -C target/release upload-to-s3
-      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+      tag=$(git describe --exact-match HEAD 2>/dev/null)
+      if [ -n "$tag" ]; then
+        cd upload-to-s3
+        tarball="upload-to-s3-${tag}-amd64-unknown-freebsd.tar.gz"
+        strip target/release/upload-to-s3
+        tar zcf "$tarball" -C target/release upload-to-s3
+        ~/bin/upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+      fi

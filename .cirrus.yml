@@ -10,11 +10,14 @@ task:
     AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
   install_script:
     - curl https://sh.rustup.rs -sSf | sh -s -- -y
-    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
+    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-1d0d752-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
   build_script: 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
-  publish_script:
-    - export tarball="upload-to-s3-$(git rev-parse --short HEAD)-x86_64-apple-darwin.tar.gz"
-    - strip target/release/upload-to-s3
-    - tar zcf "$tarball" -C target/release upload-to-s3
-    - upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+  publish_script: |
+    tag=$(git describe --exact-match HEAD 2>/dev/null)
+    if [ -n "$tag" ]; then
+      tarball="upload-to-s3-${tag}-x86_64-apple-darwin.tar.gz"
+      strip target/release/upload-to-s3
+      tar zcf "$tarball" -C target/release upload-to-s3
+      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+    fi
   before_cache_script: rm -rf $CARGO_HOME/registry/index

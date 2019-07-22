@@ -14,16 +14,18 @@ tasks:
       curl -LSso /tmp/rustup.sh https://sh.rustup.rs
       sh /tmp/rustup.sh -y
       PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl
-      curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C /tmp
-      sudo mv /tmp/upload-to-s3 /usr/local/bin
+      mkdir ~/bin
+      curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-1d0d752-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env
       PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl
   - publish: |
-      cd upload-to-s3
-      gitrev=$(git rev-parse --short HEAD)
-      tarball="upload-to-s3-${gitrev}-x86_64-unknown-linux-musl.tar.gz"
-      strip target/x86_64-unknown-linux-musl/release/upload-to-s3
-      tar zcf "$tarball" -C target/x86_64-unknown-linux-musl/release upload-to-s3
-      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+      tag=$(git describe --exact-match HEAD 2>/dev/null)
+      if [ -n "$tag" ]; then
+        cd upload-to-s3
+        tarball="upload-to-s3-${tag}-x86_64-unknown-linux-musl.tar.gz"
+        strip target/x86_64-unknown-linux-musl/release/upload-to-s3
+        tar zcf "$tarball" -C target/x86_64-unknown-linux-musl/release upload-to-s3
+        ~/bin/upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+      fi
