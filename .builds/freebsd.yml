@@ -14,7 +14,7 @@ tasks:
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env
-      cargo build --release
+      PATH="$HOME/.cargo/bin:$PATH" cargo build --release
   - publish: |
       cd upload-to-s3
       tag=$(git describe --exact-match HEAD 2>/dev/null || true)
