@@ -47,6 +47,7 @@ fn main() {
 
     println!("Uploading...");
     client.put_object(req).sync().expect("Couldn't PUT object");
+    println!("Uploaded {}", object_name);
 }
 
 fn usage(program: &str, opts: &Options) -> ! {
