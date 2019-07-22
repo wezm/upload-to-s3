@@ -17,5 +17,6 @@ tasks:
       cd upload-to-s3
       gitrev=$(git rev-parse --short HEAD)
       tarball="upload-to-s3-${gitrev}-amd64-unknown-freebsd.tar.gz"
+      strip target/release/upload-to-s3
       tar zcf "$tarball" -C target/release upload-to-s3
       upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
