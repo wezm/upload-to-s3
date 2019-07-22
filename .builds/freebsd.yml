@@ -11,13 +11,12 @@ tasks:
       fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
-      git fetch --tags
       mv ~/.aws-env .env
       cargo build --release
   - publish: |
+      cd upload-to-s3
       tag=$(git describe --exact-match HEAD 2>/dev/null || true)
       if [ -n "$tag" ]; then
-        cd upload-to-s3
         tarball="upload-to-s3-${tag}-amd64-unknown-freebsd.tar.gz"
         strip target/release/upload-to-s3
         tar zcf "$tarball" -C target/release upload-to-s3

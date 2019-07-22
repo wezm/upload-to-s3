@@ -18,13 +18,12 @@ tasks:
       curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-1d0d752-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
-      git fetch --tags
       mv ~/.aws-env .env
       PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl
   - publish: |
+      cd upload-to-s3
       tag=$(git describe --exact-match HEAD 2>/dev/null || true)
       if [ -n "$tag" ]; then
-        cd upload-to-s3
         tarball="upload-to-s3-${tag}-x86_64-unknown-linux-musl.tar.gz"
         strip target/x86_64-unknown-linux-musl/release/upload-to-s3
         tar zcf "$tarball" -C target/x86_64-unknown-linux-musl/release upload-to-s3
