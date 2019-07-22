@@ -73,4 +73,14 @@ And copy-paste the result into an [email to me](mailto:wes@wezm.net).
 You may alternately use a patch-based approach as described on
 <https://git-send-email.io>.
 
+Publishing
+----------
+
+Notes on publishing a build.
+
+    git tag -a x.y.z
+    git push --tags origin $(current_branch)
+
+CI will publish the binary if the build is successful.
+
 [rustup]: https://www.rust-lang.org/tools/install
