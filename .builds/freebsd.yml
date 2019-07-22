@@ -11,6 +11,7 @@ tasks:
       fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
+      git fetch --tags
       mv ~/.aws-env .env
       cargo build --release
   - publish: |
