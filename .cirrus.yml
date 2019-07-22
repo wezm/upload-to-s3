@@ -15,7 +15,6 @@ task:
   build_script:
     - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
   publish_script: |
-    git fetch
     tag=$(git describe --exact-match HEAD 2>/dev/null || true)
     if [ -n "$tag" ]; then
       tarball="upload-to-s3-${tag}-x86_64-apple-darwin.tar.gz"
