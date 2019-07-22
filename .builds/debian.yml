@@ -20,3 +20,9 @@ tasks:
       cd upload-to-s3
       mv ~/.aws-env .env
       PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl
+  - publish: |
+      cd upload-to-s3
+      gitrev=$(git rev-parse --short HEAD)
+      tarball="upload-to-s3-${gitrev}-x86_64-unknown-linux-musl.tar.gz"
+      tar zcf "$tarball" -C target/x86_64-unknown-linux-musl/release upload-to-s3
+      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"

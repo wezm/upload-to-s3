@@ -12,4 +12,8 @@ task:
     - curl https://sh.rustup.rs -sSf | sh -s -- -y
     - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
   build_script: 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
+  publish_script:
+    - export tarball="upload-to-s3-$(git rev-parse --short HEAD)-amd64-unknown-freebsd.tar.gz"
+    - tar zcf "$tarball" -C target/release upload-to-s3
+    - upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
   before_cache_script: rm -rf $CARGO_HOME/registry/index
