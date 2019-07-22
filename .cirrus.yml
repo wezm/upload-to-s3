@@ -16,7 +16,7 @@ task:
     fi
   install_script:
     - curl https://sh.rustup.rs -sSf | sh -s -- -y
-    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-1d0d752-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
+    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
     - git fetch --tags
   build_script:
     - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'

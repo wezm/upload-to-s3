@@ -28,14 +28,14 @@ Download
 `upload-to-s3` is a single binary available for a number of platforms. The binary
 has no runtime dependencies.
 
-* [FreeBSD 12.0 amd64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz)
-* [Linux x86\_64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz)
-* [MacOS x86\_64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-apple-darwin.tar.gz)
-* [OpenBSD 6.5 amd64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-openbsd.tar.gz)
+* [FreeBSD 12.0 amd64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-amd64-unknown-freebsd.tar.gz)
+* [Linux x86\_64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-unknown-linux-musl.tar.gz)
+* [MacOS x86\_64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-apple-darwin.tar.gz)
+* [OpenBSD 6.5 amd64](https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-amd64-unknown-openbsd.tar.gz)
 
 Download and extract along these lines:
 
-    curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-x86_64-unknown-linux-musl.tar.gz | tar zxf -
+    curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-unknown-linux-musl.tar.gz | tar zxf -
 
 Development
 -----------
@@ -81,6 +81,7 @@ Notes on publishing a build.
     git tag -a x.y.z
     git push --tags origin $(current_branch)
 
-CI will publish the binary if the build is successful.
+CI will publish the binary if the build is successful. If successful, update
+README with links to new binaries.
 
 [rustup]: https://www.rust-lang.org/tools/install

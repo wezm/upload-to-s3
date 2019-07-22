@@ -10,7 +10,7 @@ tasks:
       curl -LSso /tmp/rustup.sh https://sh.rustup.rs
       sh /tmp/rustup.sh -y
       mkdir ~/bin
-      fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.0-amd64-unknown-freebsd.tar.gz | tar xzf - -C ~/bin
+      fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-amd64-unknown-freebsd.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env

@@ -8,7 +8,7 @@ sources:
 tasks:
   - install: |
       mkdir ~/bin
-      ftp -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.5-amd64-unknown-openbsd.tar.gz | tar xzf - -C ~/bin
+      ftp -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-amd64-unknown-openbsd.tar.gz | tar xzf - -C ~/bin
   - build: |
       cd upload-to-s3
       mv ~/.aws-env .env
