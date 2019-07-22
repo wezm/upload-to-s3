@@ -2,9 +2,6 @@ task:
   name: Build (Mac OS)
   osx_instance:
     image: mojave-base
-  cargo_cache:
-    folder: $CARGO_HOME/registry
-    fingerprint_script: cat Cargo.lock
   environment:
     AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
     AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
@@ -31,4 +28,3 @@ task:
       tar zcf "$tarball" -C target/release upload-to-s3
       upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
     fi
-  before_cache_script: rm -rf $CARGO_HOME/registry/index
