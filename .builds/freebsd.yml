@@ -14,7 +14,7 @@ tasks:
       mv ~/.aws-env .env
       cargo build --release
   - publish: |
-      tag=$(git describe --exact-match HEAD 2>/dev/null)
+      tag=$(git describe --exact-match HEAD 2>/dev/null || true)
       if [ -n "$tag" ]; then
         cd upload-to-s3
         tarball="upload-to-s3-${tag}-amd64-unknown-freebsd.tar.gz"

@@ -21,7 +21,7 @@ tasks:
       mv ~/.aws-env .env
       PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl
   - publish: |
-      tag=$(git describe --exact-match HEAD 2>/dev/null)
+      tag=$(git describe --exact-match HEAD 2>/dev/null || true)
       if [ -n "$tag" ]; then
         cd upload-to-s3
         tarball="upload-to-s3-${tag}-x86_64-unknown-linux-musl.tar.gz"
