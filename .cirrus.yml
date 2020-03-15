@@ -1,23 +1,58 @@
 task:
-  name: Build (Mac OS)
-  osx_instance:
-    image: mojave-base
+  name: Build (Debian Linux)
+  container:
+    image: debian:10-slim
   environment:
     AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
     AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
-  clone_script: |
-    if [ -z "$CIRRUS_PR" ]; then
-      git clone --recursive --branch=$CIRRUS_BRANCH https://x-access-token:${CIRRUS_REPO_CLONE_TOKEN}@github.com/${CIRRUS_REPO_FULL_NAME}.git $CIRRUS_WORKING_DIR
-      git reset --hard $CIRRUS_CHANGE_IN_REPO
-    else
-      git clone --recursive https://x-access-token:${CIRRUS_REPO_CLONE_TOKEN}@github.com/${CIRRUS_REPO_FULL_NAME}.git $CIRRUS_WORKING_DIR
-      git fetch origin pull/$CIRRUS_PR/head:pull/$CIRRUS_PR
-      git reset --hard $CIRRUS_CHANGE_IN_REPO
-    fi
   install_script:
-    - curl https://sh.rustup.rs -sSf | sh -s -- -y
+    - apt-get update && apt-get install -y --no-install-recommends git ca-certificates curl gcc libc6-dev musl-tools
+    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
+    - 'PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl'
+    - mkdir ~/bin
+    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C ~/bin
+  build_script:
+    - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl'
+  publish_script: |
+    tag=$(git describe --exact-match HEAD 2>/dev/null || true)
+    if [ -n "$tag" ]; then
+      tarball="upload-to-s3-${tag}-x86_64-unknown-linux-musl.tar.gz"
+      strip target/x86_64-unknown-linux-musl/release/upload-to-s3
+      tar zcf "$tarball" -C target/x86_64-unknown-linux-musl/release upload-to-s3
+      ~/bin/upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
+    fi
+
+task:
+  name: Build (FreeBSD)
+  freebsd_instance:
+    image_family: freebsd-12-1
+  environment:
+    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
+    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
+  install_script:
+    - pkg install -y git-lite rust
+    - fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-amd64-unknown-freebsd.tar.gz | tar xzf - -C /usr/local/bin
+  build_script:
+    - cargo build --release
+  publish_script: |
+    tag=$(git describe --exact-match HEAD 2>/dev/null || true)
+    if [ -n "$tag" ]; then
+      tarball="upload-to-s3-${tag}-amd64-unknown-freebsd.tar.gz"
+      strip target/release/upload-to-s3
+      tar zcf "$tarball" -C target/release upload-to-s3
+      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
+    fi
+
+task:
+  name: Build (Mac OS)
+  osx_instance:
+    image: catalina-base
+  environment:
+    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
+    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
+  install_script:
+    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
     - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
-    - git fetch --tags
   build_script:
     - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
   publish_script: |
@@ -26,5 +61,5 @@ task:
       tarball="upload-to-s3-${tag}-x86_64-apple-darwin.tar.gz"
       strip target/release/upload-to-s3
       tar zcf "$tarball" -C target/release upload-to-s3
-      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tarball"
+      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
     fi
