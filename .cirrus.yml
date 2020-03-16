@@ -87,7 +87,7 @@ task:
       $tag=""
     }
     if ( $tag.Length -gt 0 ) {
-      $tarball="upload-to-s3-$tag-x86_64-pc-windows-gnu.zip"
+      $tarball="upload-to-s3-$tag-x86_64-pc-windows-msvc.zip"
       cd target\release
       strip upload-to-s3.exe
       Compress-Archive .\upload-to-s3.exe "$tarball"

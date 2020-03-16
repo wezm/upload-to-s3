@@ -1,6 +1,6 @@
 [package]
 name = "upload-to-s3"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["Wesley Moore <wes@wezm.net>"]
 edition = "2018"
 
