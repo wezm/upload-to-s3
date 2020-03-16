@@ -10,7 +10,7 @@ task:
     - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
     - 'PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl'
     - mkdir ~/bin
-    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C ~/bin
+    - curl -L https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C ~/bin
   build_script:
     - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl'
   publish_script: |
@@ -31,7 +31,7 @@ task:
     AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
   install_script:
     - pkg install -y git-lite rust
-    - fetch -o - https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-amd64-unknown-freebsd.tar.gz | tar xzf - -C /usr/local/bin
+    - fetch -o - https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-amd64-unknown-freebsd.tar.gz | tar xzf - -C /usr/local/bin
   build_script:
     - cargo build --release
   publish_script: |
@@ -52,7 +52,7 @@ task:
     AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
   install_script:
     - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
-    - curl -L https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
+    - curl -L https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
   build_script:
     - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
   publish_script: |
@@ -75,7 +75,7 @@ task:
   install_script:
     - Invoke-WebRequest -Uri https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
     - .\rustup-init -y --profile minimal
-    - Invoke-WebRequest https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-pc-windows-gnu.zip -OutFile upload-to-s3.zip
+    - Invoke-WebRequest https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-pc-windows-msvc.zip -OutFile upload-to-s3.zip
     - Expand-Archive upload-to-s3.zip -DestinationPath .
     - git fetch --tags
   build_script:
