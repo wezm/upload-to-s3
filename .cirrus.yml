@@ -63,3 +63,34 @@ task:
       tar zcf "$tarball" -C target/release upload-to-s3
       upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
     fi
+
+task:
+  name: Build (Windows)
+  windows_container:
+    image: cirrusci/windowsservercore:cmake
+  environment:
+    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
+    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
+    CIRRUS_SHELL: powershell
+  install_script:
+    - Invoke-WebRequest -Uri https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
+    - .\rustup-init -y --profile minimal
+    - Invoke-WebRequest https://releases.wezm.net/upload-to-s3/upload-to-s3-0.1.8-x86_64-pc-windows-gnu.zip -OutFile upload-to-s3.zip
+    - Expand-Archive upload-to-s3.zip -DestinationPath .
+    - git fetch --tags
+  build_script:
+    - '~\.cargo\bin\cargo build --release'
+  publish_script: |
+    try {
+      $tag=$(git describe --exact-match HEAD 2>$null)
+    } catch {
+      $tag=""
+    }
+    if ( $tag.Length -gt 0 ) {
+      $tarball="upload-to-s3-$tag-x86_64-pc-windows-gnu.zip"
+      cd target\release
+      strip upload-to-s3.exe
+      Compress-Archive .\upload-to-s3.exe "$tarball"
+      cd ..\..
+      .\upload-to-s3 -b releases.wezm.net "target\release\$tarball" "upload-to-s3/$tag/$tarball"
+    }
