@@ -46,7 +46,7 @@ Development
 
 **Build Status:** [![Build Status](https://api.cirrus-ci.com/github/wezm/upload-to-s3.svg)](https://cirrus-ci.com/github/wezm/upload-to-s3)
 
-**Minimum Supported Rust Version:** 1.33.0
+**Minimum Supported Rust Version:** 1.61.0
 
 Publishing
 ----------
