@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 dotenv = "0.15.0"
 getopts = "0.2.21"
-tokio = { version = "1.19.2", features = ["fs"] }
+tokio = { version = "1.19.2", features = ["fs", "rt", "macros"] }
 tokio-util = { version = "0.7.3", features = ["io"] }
 rusoto_core = { version = "0.48.0", default-features = false, features = ["rustls"] }
 rusoto_credential = "0.48.0"
