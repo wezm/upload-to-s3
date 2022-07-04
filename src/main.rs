@@ -8,7 +8,7 @@ use rusoto_credential::EnvironmentProvider;
 use rusoto_s3::{PutObjectRequest, S3Client, StreamingBody, S3};
 use tokio_util::io::ReaderStream;
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> ExitCode {
     dotenv::dotenv().ok();
 
