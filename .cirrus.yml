@@ -1,18 +1,21 @@
+env:
+  PATH: "$HOME/.cargo/bin:$PATH"
+  RUST_VERSION: '1.61.0'
+  AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
+  AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
+
 task:
   name: Build (Debian Linux)
   container:
     image: debian:10-slim
-  environment:
-    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
-    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
   install_script:
     - apt-get update && apt-get install -y --no-install-recommends git ca-certificates curl gcc libc6-dev musl-tools
-    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
-    - 'PATH="$HOME/.cargo/bin:$PATH" rustup target add x86_64-unknown-linux-musl'
+    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
+    - rustup target add x86_64-unknown-linux-musl
     - mkdir ~/bin
     - curl -L https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-unknown-linux-musl.tar.gz | tar xzf - -C ~/bin
   build_script:
-    - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release --target x86_64-unknown-linux-musl'
+    - cargo build --release --locked --target x86_64-unknown-linux-musl
   publish_script: |
     tag=$(git describe --exact-match HEAD 2>/dev/null || true)
     if [ -n "$tag" ]; then
@@ -25,15 +28,13 @@ task:
 task:
   name: Build (FreeBSD)
   freebsd_instance:
-    image_family: freebsd-12-1
-  environment:
-    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
-    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
+    image_family: freebsd-13-0
   install_script:
-    - pkg install -y git-lite rust
+    - pkg install -y git-lite
+    - fetch -o - https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
     - fetch -o - https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-amd64-unknown-freebsd.tar.gz | tar xzf - -C /usr/local/bin
   build_script:
-    - cargo build --release
+    - cargo build --release --locked
   publish_script: |
     tag=$(git describe --exact-match HEAD 2>/dev/null || true)
     if [ -n "$tag" ]; then
@@ -47,14 +48,11 @@ task:
   name: Build (Mac OS)
   osx_instance:
     image: catalina-base
-  environment:
-    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
-    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
   install_script:
-    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
+    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
     - curl -L https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
   build_script:
-    - 'PATH="$HOME/.cargo/bin:$PATH" cargo build --release'
+    - cargo build --release --locked
   publish_script: |
     tag=$(git describe --exact-match HEAD 2>/dev/null || true)
     if [ -n "$tag" ]; then
@@ -69,20 +67,22 @@ task:
   windows_container:
     image: cirrusci/windowsservercore:cmake
   environment:
-    AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
-    AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
     CIRRUS_SHELL: powershell
   install_script:
     - Invoke-WebRequest -Uri https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
-    - .\rustup-init -y --profile minimal
+    - .\rustup-init -y --profile minimal --default-toolchain $env:RUST_VERSION
     - Invoke-WebRequest https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-pc-windows-msvc.zip -OutFile upload-to-s3.zip
     - Expand-Archive upload-to-s3.zip -DestinationPath .
     - git fetch --tags
-  build_script:
-    - '~\.cargo\bin\cargo build --release'
+  # PowerShell it truly horrific and lacks a way to exit on external command failure so we have to check after every command
+  # https://stackoverflow.com/questions/48864988/powershell-with-git-command-error-handling-automatically-abort-on-non-zero-exi/48877892#48877892
+  build_script: |
+    ~\.cargo\bin\cargo build --release --locked
+    if ($LASTEXITCODE) { Throw }
   publish_script: |
     try {
       $tag=$(git describe --exact-match HEAD 2>$null)
+      if ($LASTEXITCODE) { Throw }
     } catch {
       $tag=""
     }
@@ -90,7 +90,9 @@ task:
       $tarball="upload-to-s3-$tag-x86_64-pc-windows-msvc.zip"
       cd target\release
       strip upload-to-s3.exe
+      if ($LASTEXITCODE) { Throw }
       Compress-Archive .\upload-to-s3.exe "$tarball"
       cd ..\..
       .\upload-to-s3 -b releases.wezm.net "target\release\$tarball" "upload-to-s3/$tag/$tarball"
+      if ($LASTEXITCODE) { Throw }
     }
