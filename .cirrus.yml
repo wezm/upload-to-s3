@@ -45,7 +45,7 @@ task:
     fi
 
 task:
-  name: Build (Mac OS)
+  name: Build (Mac OS x86)
   osx_instance:
     image: catalina-base
   install_script:
@@ -61,6 +61,25 @@ task:
       tar zcf "$tarball" -C target/release upload-to-s3
       upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
     fi
+
+task:
+  name: Build (Mac OS ARM)
+  macos_instance:
+    image: ghcr.io/cirruslabs/macos-monterey-base:latest
+  install_script:
+    - uname -a
+    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
+    #- curl -L https://releases.wezm.net/upload-to-s3/0.1.10/upload-to-s3-0.1.10-x86_64-apple-darwin.tar.gz | tar xzf - -C /usr/local/bin
+  build_script:
+    - cargo build --release --locked
+#  publish_script: |
+#    tag=$(git describe --exact-match HEAD 2>/dev/null || true)
+#    if [ -n "$tag" ]; then
+#      tarball="upload-to-s3-${tag}-x86_64-apple-darwin.tar.gz"
+#      strip target/release/upload-to-s3
+#      tar zcf "$tarball" -C target/release upload-to-s3
+#      upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
+#    fi
 
 task:
   name: Build (Windows)
