@@ -8,6 +8,7 @@ task:
   name: Build (Debian Linux)
   container:
     image: debian:10-slim
+    cpu: 4
   install_script:
     - apt-get update && apt-get install -y --no-install-recommends git ca-certificates curl gcc libc6-dev musl-tools
     - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
@@ -29,6 +30,7 @@ task:
   name: Build (FreeBSD)
   freebsd_instance:
     image_family: freebsd-13-0
+    cpu: 4
   install_script:
     - pkg install -y git-lite
     - fetch -o - https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
