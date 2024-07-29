@@ -1,6 +1,6 @@
 env:
   PATH: "$HOME/.cargo/bin:$PATH"
-  RUST_VERSION: '1.61.0'
+  RUST_VERSION: '1.79.0'
   AWS_ACCESS_KEY_ID: ENCRYPTED[47c5a661185faab3f5dfb825bda19470532f6098dedf8a4847219bdbd0ad5bc9d7413543390f6feb17c1c2c0b1e4f3bc]
   AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
 
@@ -30,7 +30,7 @@ task:
 task:
   name: Build (FreeBSD)
   freebsd_instance:
-    image_family: freebsd-13-0
+    image_family: freebsd-14-1
     cpu: 4
   cargo_cache:
     folder: $HOME/.cargo/registry
@@ -52,7 +52,7 @@ task:
 task:
   name: Build (Mac OS)
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-monterey-base:latest
+    image: ghcr.io/cirruslabs/macos-sonoma-base:latest
   cargo_cache:
     folder: $HOME/.cargo/registry
     fingerprint_script: cat Cargo.lock
