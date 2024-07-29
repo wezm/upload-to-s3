@@ -5,9 +5,9 @@ env:
   AWS_SECRET_ACCESS_KEY: ENCRYPTED[67dc1d900976594692736ddf12e4cd4db743458315b00acc9bd7f52c0812c00a2d63e654a66ff96196facea0542b7719]
 
 task:
-  name: Build (Debian Linux)
+  name: Build (Debian x86_64)
   container:
-    image: debian:10-slim
+    image: debian:12-slim
     cpu: 4
   cargo_cache:
     folder: $HOME/.cargo/registry
@@ -25,6 +25,29 @@ task:
       strip target/x86_64-unknown-linux-musl/release/upload-to-s3
       tar zcf "$tarball" -C target/x86_64-unknown-linux-musl/release upload-to-s3
       target/x86_64-unknown-linux-musl/release/upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
+    fi
+
+task:
+  name: Build (Debian aarch64)
+  arm_container:
+    image: debian:12-slim
+    cpu: 4
+  cargo_cache:
+    folder: $HOME/.cargo/registry
+    fingerprint_script: cat Cargo.lock
+  install_script:
+    - apt-get update && apt-get install -y --no-install-recommends git ca-certificates curl gcc libc6-dev musl-tools
+    - curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain ${RUST_VERSION}
+    - rustup target add aarch64-unknown-linux-musl
+  build_script:
+    - cargo build --release --locked --target aarch64-unknown-linux-musl
+  publish_script: |
+    tag=$(git describe --exact-match HEAD 2>/dev/null || true)
+    if [ -n "$tag" ]; then
+      tarball="upload-to-s3-${tag}-aarch64-unknown-linux-musl.tar.gz"
+      strip target/aarch64-unknown-linux-musl/release/upload-to-s3
+      tar zcf "$tarball" -C target/aarch64-unknown-linux-musl/release upload-to-s3
+      target/aarch64-unknown-linux-musl/release/upload-to-s3 -b releases.wezm.net "$tarball" "upload-to-s3/$tag/$tarball"
     fi
 
 task:
@@ -78,6 +101,7 @@ task:
   name: Build (Windows)
   windows_container:
     image: cirrusci/windowsservercore:cmake
+    cpu: 4
   cargo_cache:
     folder: $HOME/.cargo/registry
     fingerprint_script: cat Cargo.lock
