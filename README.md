@@ -10,6 +10,15 @@ which can be downloaded as part of a CI build.
 Usage
 -----
 
+```
+Usage: upload-to-s3 [options] FILE OBJECT
+
+Options:
+    -b, --bucket NAME   S3 bucket
+    -r, --region REGION S3 region (default: us-east-1)
+    -h, --help          Print this help information
+```
+
 `upload-to-s3` expects to retrieve AWS credentials from the following
 environment variables:
 
@@ -25,17 +34,18 @@ Upload a file as follows:
 For a more complete example of usage see [the CI configuration for this
 repository][repo].
 
-
 Download
 --------
 
 `upload-to-s3` is a single binary available for a number of platforms. The binary
-has no runtime dependencies.
+has no runtime dependencies. Pre-compiled binaries are available for:
 
-* [FreeBSD 13 amd64](https://releases.wezm.net/upload-to-s3/0.2.0/upload-to-s3-0.2.0-amd64-unknown-freebsd.tar.gz)
-* [Linux x86\_64](https://releases.wezm.net/upload-to-s3/0.2.0/upload-to-s3-0.2.0-x86_64-unknown-linux-musl.tar.gz)
-* [MacOS Universal](https://releases.wezm.net/upload-to-s3/0.2.0/upload-to-s3-0.2.0-universal-apple-darwin.tar.gz)
-* [Windows x86\_64](https://releases.wezm.net/upload-to-s3/0.2.0/upload-to-s3-0.2.0-x86_64-pc-windows-msvc.zip)
+* FreeBSD 14+ amd64
+* Linux x86\_64
+* MacOS Universal
+* Windows x86\_64
+
+Check the [latest release] for download links.
 
 Download and extract along these lines:
 
@@ -46,7 +56,7 @@ Development
 
 **Build Status:** [![Build Status](https://api.cirrus-ci.com/github/wezm/upload-to-s3.svg)](https://cirrus-ci.com/github/wezm/upload-to-s3)
 
-**Minimum Supported Rust Version:** 1.61.0
+**Minimum Supported Rust Version:** 1.79.0
 
 Publishing
 ----------
@@ -56,8 +66,7 @@ Notes on publishing a build:
     git tag -a x.y.z
     git push --tags origin $(current_branch)
 
-CI will publish the binary if the build is successful. If successful, update
-README with links to new binaries.
+CI will publish the binary if the build is successful.
 
 [rustup]: https://www.rust-lang.org/tools/install
 [repo]: https://github.com/wezm/upload-to-s3
