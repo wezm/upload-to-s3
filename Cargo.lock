@@ -487,7 +487,7 @@ checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
 name = "upload-to-s3"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "dotenv",
  "getopts",
