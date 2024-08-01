@@ -1,7 +1,13 @@
 [package]
 name = "upload-to-s3"
+description = "Small tool to upload a file to Amazon S3"
 version = "0.3.0"
 authors = ["Wesley Moore <wes@wezm.net>"]
+categories = ["command-line-utilities"]
+homepage = "https://github.com/wezm/upload-to-s3"
+repository = "https://github.com/wezm/upload-to-s3"
+keywords = ["s3", "upload", "environment"]
+license = "MIT OR Apache-2.0"
 edition = "2021"
 
 [dependencies]
